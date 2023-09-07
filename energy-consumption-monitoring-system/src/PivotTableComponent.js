@@ -4,7 +4,7 @@ import 'react-pivottable/pivottable.css';
 import TableRenderers from 'react-pivottable/TableRenderers';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
-
+// import data from "./mps.json" assert { type: 'json' };;
 
 // create Plotly React component via dependency injection
 const Plot = createPlotlyComponent(window.Plotly);
@@ -13,8 +13,8 @@ const Plot = createPlotlyComponent(window.Plotly);
 const PlotlyRenderers = createPlotlyRenderers(Plot);
 
 // see documentation for supported input formats
-const data = [['attribute', 'attribute2'], ['value1', 'value2']];
-
+// const data = [['attribute', 'attribute2'], ['value1', 'value2']];
+const data = require('./mps.json');
 function PivotTableComponent() {
   const [count, setInputValue] = useState(0);
 
