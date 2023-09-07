@@ -1,23 +1,45 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'react-pivottable/pivottable.css'; // Import PivotTable.js styles
+import React, { useEffect, useState  } from 'react';
 import PivotTableUI from 'react-pivottable/PivotTableUI';
-import tempData from './mps.json';
+import 'react-pivottable/pivottable.css';
+import TableRenderers from 'react-pivottable/TableRenderers';
+import createPlotlyComponent from 'react-plotly.js/factory';
+import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
 
-const PivotTableComponent = () => {
-// const data = [
-//         {"Level": 2, "Age": 22, "Name": "Liu, Laurin", "weight": "35.2"},
-//         {"Level": 5, "Age": 43, "Name": "Mourani, Maria", "weight": "24.4"},
-//         ];
+
+// create Plotly React component via dependency injection
+const Plot = createPlotlyComponent(window.Plotly);
+
+// create Plotly renderers via dependency injection
+const PlotlyRenderers = createPlotlyRenderers(Plot);
+
+// see documentation for supported input formats
 const data = [['attribute', 'attribute2'], ['value1', 'value2']];
+
+function PivotTableComponent() {
+  const [count, setInputValue] = useState(0);
+
+  useEffect(() => {
+
+    const handleChange = (event) => {
+      // Update the state with the new value from the input
+      setInputValue(event.target.value);
+    };
+
+  }, [count]);
+
+
   return (
     <div>
       <PivotTableUI
-        data={data} // Your data array
-        onChange={() => {}} // Optional callback when the table changes
+          data={data}
+          onChange={s => setInputValue(s)}
+          renderers={Object.assign({}, TableRenderers, PlotlyRenderers)}
+                {...count}
       />
     </div>
+    
   );
-};
+    
+}
 
 export default PivotTableComponent;
