@@ -16,25 +16,29 @@ const PlotlyRenderers = createPlotlyRenderers(Plot);
 // const data = [['attribute', 'attribute2'], ['value1', 'value2']];
 const data = require('./mps.json');
 function PivotTableComponent() {
-  const [count, setInputValue] = useState(0);
+  const [state, setState] = useState({});
+  // const [data, setData] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const handleChange = (event) => {
-      // Update the state with the new value from the input
-      setInputValue(event.target.value);
-    };
+  //   fetch('/data.json')
+  //     .then((response) => response.json())
+  //     .then((jsonData) => setData(jsonData))
+  //     .catch((error) => {
+  //       console.error('Error fetching data:', error);
+  //     });
 
-  }, [count]);
+
+  // }, []);
 
 
   return (
     <div>
       <PivotTableUI
           data={data}
-          onChange={s => setInputValue(s)}
+          onChange={(s) => setState(s)}
           renderers={Object.assign({}, TableRenderers, PlotlyRenderers)}
-                {...count}
+          {...state}
       />
     </div>
     
