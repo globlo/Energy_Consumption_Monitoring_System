@@ -7,6 +7,7 @@ import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers';
 // import data from "./mps.json" assert { type: 'json' };;
 import jsonData from './mps.json';
 
+
 // create Plotly React component via dependency injection
 const Plot = createPlotlyComponent(window.Plotly);
 
@@ -20,9 +21,17 @@ function PivotTableComponent() {
   const [state, setState] = useState({});
   const [data, setData] = useState([]);
 
-  useEffect(() => {
+  const [plotlyChart, setPlotlyChart] = useState(null);
 
+
+  useEffect(() => {
     setData(jsonData);
+
+    return () => {
+      // Cleanup the Plotly chart during component unmount
+      setPlotlyChart(null);
+    };
+    
   }, [state]);
 
 
