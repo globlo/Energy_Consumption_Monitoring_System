@@ -1,24 +1,30 @@
-// const os = require('os');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const port = 7000; // Specify the port you want to listen on
 
-// const networkInterfaces = os.networkInterfaces();
-// const localIp = networkInterfaces['Wi-Fi'][1].address; // Change 'Wi-Fi' to the appropriate interface on your system
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// console.log('Local IP Address:', localIp);
-
-
-
-const net = require('net');
-
-const client = new net.Socket();
-
-client.connect(80, "194.180.179.174", () => {
-  console.log('Connected to Arduino');
+app.get('/', (req, res) => {
+  console.log("request GET")
+  res.send('This is a GET request response. Hey from Server!');
 });
 
-client.on('data', (data) => {
-  console.log('Data received from Arduino:', data.toString());
+// Handle HTTP POST requests
+app.post('/', (req, res) => {
+  // Assuming you're sending key-value pairs like "param1=value1&param2=value2"
+  const C = req.body.Current;
+  const V = req.body.Voltage;
+
+  console.log(`Received POST request with Current=${C} and Voltage=${V}`);
+
+  // Process the received data
+  // You can add your logic here, such as storing the data or sending a response
+
+  res.send('POST request received and processed successfully.');
 });
 
-client.on('close', () => {
-  console.log('Connection to Arduino closed');
+app.listen(port, '192.168.0.142', () => {
+  console.log(`Server is listening on port ${port}`);
 });
+
