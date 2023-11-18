@@ -1,52 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import SelectInput from './SelectInput';
-import LineChart from './LineChart';
-import RealTimeData from './RealTimeData';
-
-const data = [
-  { category: 'A', values: [] },
-  { category: 'B', values: [] },
-  { category: 'C', values: [] },
-  { category: 'D', values: [] },
-];
-
-const categoryOptions = data.map(item => ({
-  value: item.category,
-  label: `Category ${item.category}`,
-}));
+import React, { useEffect, useState } from 'react';
+import RealTimeChart from './RealTimeChart';
+// import fetchData  from './DataFetcher';
+import io from "socket.io-client";
 
 const App = () => {
-  const [selectedCategories, setSelectedCategories] = useState(data.map(item => item.category));
-  const [chartData, setChartData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);  // Define filteredData here
+  const [currents, setCurrents] = useState([]);
+  const [devices, setDevices] = useState([]);
+  const [combinedData, setCombinedData] = useState([]);
+
+  
+  const combineData = (deviceNames, currentValues) => {
+    return deviceNames.map((device, index) => ({
+      device,
+      currentValue: currentValues[index],
+    }));
+  };
+
+  useEffect(() => {
+    const socket = io.connect("http://localhost:4000");
+
+    // Listen for "Realtime" event and update state
+    socket.on("Realtime", (deviceNames, currentValues) => {
+      
+      // console.log(deviceNames);
+      setCurrents(currentValues);
+      setDevices(deviceNames);
+      // console.log(currents);
+      // console.log(devices);
+
+      const newCombinedData = combineData(devices, currents);
+
+    
+      // Update the combinedData state
+      // console.log(newCombinedData);
+      setCombinedData(newCombinedData);
+      console.log(combinedData);
+
+    });
+
+    // Clean up on component unmount
+    return () => { socket.disconnect() };
+  }, [devices, currents]);
 
   return (
-    <div className="App">
-      <h1>Real-Time Data and Flowing Line Chart</h1>
-      <SelectInput
-        options={categoryOptions}
-        selectedCategories={selectedCategories}
-        setSelectedCategories={setSelectedCategories}
-        setFilteredData={setFilteredData}  // Pass setFilteredData to SelectInput
-      />
-      <div style={{ marginTop: '20px' }}>
-        <LineChart
-          data={chartData}
-          layout={{
-            title: 'Real Time Current',
-            xaxis: { title: 'Time' },
-            yaxis: { title: 'Current' },
-          }}
-          filteredData={filteredData}  // Use filteredData in LineChart
-          selectedCategories={selectedCategories}
-          setChartData={setChartData}
-        />
+    <div>
+      <h1>Home Energy Consumption Monitoring System</h1>
+      <div>
+        {/* Map through the combinedData array to render each item */}
+        {combinedData.map((item) => (
+          
+          <RealTimeChart deviceName={item.device} currentValue={item.currentValue}/>
+        ))}
       </div>
+ 
     </div>
   );
 };
-
-ReactDOM.render(<App />, document.getElementById('root'));
 
 export default App;
