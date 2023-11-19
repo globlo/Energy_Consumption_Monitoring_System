@@ -5,11 +5,17 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const char* ssid     = "MyAltice dc5313";
-const char* password = "30-chestnut-9508";
+// const char* ssid     = "CenturyLink8078";
+// const char* password = "2816158333";
 
-const char* host = "192.168.1.135";
-const char* serverAddress = "http://192.168.1.135:7000"; 
+const char* ssid     = "CenturyLink8078";
+const char* password = "2816158333";
+
+const char* host = "192.168.0.134";
+const int server_port = 7000;
+
+String serverAddress = "http://"+String(host)+":"+String(server_port); 
+
 
 HTTPClient http;
 WiFiClient wifiClient; // Declare a WiFiClient object
@@ -19,9 +25,6 @@ void setup() {
   delay(100);
 
   // We start by connecting to a WiFi network
-
-  Serial.println();
-  Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
   
@@ -32,30 +35,26 @@ void setup() {
     Serial.print(".");
   }
 
-  Serial.println("");
   Serial.println("WiFi connected");  
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.print("Netmask: ");
-  Serial.println(WiFi.subnetMask());
-  Serial.print("Gateway: ");
-  Serial.println(WiFi.gatewayIP());
+
 }
 
-int value = 0;
 
 void loop() {
-  delay(5000);
-  ++value;
+  // delay(5000);
 
   Serial.print("connecting to ");
-  Serial.println(host);
+  Serial.println(serverAddress);
   
-  // Use WiFiClient class to create TCP connections
-  WiFiClient client;
 
-  http.begin(wifiClient, serverAddress); // Use the WiFiClient object
-  int httpCode = http.GET();
+  http.begin(wifiClient, serverAddress);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded"); // Set the content type
+
+  // Data to send in the POST request
+  String postData = "Current=18"; // Replace with your data
+
+  // int httpCode = http.GET();
+  int httpCode = http.POST(postData);
 
   if (httpCode > 0) {
     if (httpCode == HTTP_CODE_OK) {
