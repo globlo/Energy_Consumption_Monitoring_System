@@ -31,7 +31,7 @@ const ChartSelector = ({ deviceName,currentValue }) => {
         <RealTimeCurrentChart deviceName={device} currentValue={currentValue} />
       ) : null}
       {selectedChart === 'both' || selectedChart === 'watt' ? (
-        <RealTimeWattChart deviceName={device} currentValue={currentValue} />
+        <RealTimeWattChart deviceName={deviceName} currentValue={currentValue} />
       ) : null}
     </div>
   );

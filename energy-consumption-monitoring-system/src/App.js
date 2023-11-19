@@ -36,7 +36,10 @@ const App = () => {
   return (
     <div>
       <h1>Home Energy Consumption Monitoring System</h1>
-      <Table devices={devices} currents={currents} setDevices={setDevices}/>
+      <div>
+        <Table devices={devices} currents={currents}/>
+      </div>
+      
       <div>
         <PieChart title={"Energy Distribution by Devices"} values={currents} labels={devices}/>
       </div>

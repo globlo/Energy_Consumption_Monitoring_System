@@ -1,6 +1,7 @@
 import React from 'react';
+import Plot from 'react-plotly.js';
 
-const Table = ({ devices, currents, setDevices}) => {
+const Table = ({ devices, currents }) => {
   const tableData = [
     {
       Header: 'Device',
@@ -11,9 +12,9 @@ const Table = ({ devices, currents, setDevices}) => {
       accessor: 'current',
     },
     {
-      Header: 'Watt',
-      accessor: 'watt',
-    },
+        Header: 'Watt',
+        accessor: 'watt',
+      },
   ];
 
   // Assuming devices and currents are arrays of the same length
@@ -25,24 +26,24 @@ const Table = ({ devices, currents, setDevices}) => {
 
   return (
     <div>
-      <table>
-        <thead>
-          <tr>
-            {tableData.map((column) => (
-              <th key={column.accessor}>{column.Header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {tableContent.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {tableData.map((column) => (
-                <td key={`${rowIndex}-${column.accessor}`}>{row[column.accessor]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Plot
+        data={[
+          {
+            type: 'table',
+            header: {
+              values: tableData.map((column) => column.Header),
+            },
+            cells: {
+              values: tableData.map((column) => tableContent.map((row) => row[column.accessor])),
+            },
+          },
+        ]}
+        layout={{
+          width: 500,
+          height: 400,
+          title: 'Energy Usage Summary',
+        }}
+      />
     </div>
   );
 };
