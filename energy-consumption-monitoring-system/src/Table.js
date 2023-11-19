@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Table = ({ devices, currents }) => {
+const Table = ({ devices, currents, setDevices}) => {
   const tableData = [
     {
       Header: 'Device',
