@@ -25,23 +25,33 @@ const Table = ({ devices, currents }) => {
   }));
 
   return (
-    <div>
+    <div >
       <Plot
         data={[
           {
             type: 'table',
             header: {
               values: tableData.map((column) => column.Header),
+              font: { size: 16 },
+              height: 50,
+              align: ["center", "center"],
+              fill: { color: "#19E4BB" }
             },
             cells: {
               values: tableData.map((column) => tableContent.map((row) => row[column.accessor])),
+              font: { size: 16 },
+              height: 45,
+              align: ["center", "center"],
+              
             },
           },
         ]}
         layout={{
-          width: 500,
-          height: 400,
-          title: 'Energy Usage Summary',
+            width: window.innerWidth * 0.35,
+            height: window.innerWidth * 0.25,
+            title: 'Energy Usage Summary',
+            autosize: true,
+          
         }}
       />
     </div>

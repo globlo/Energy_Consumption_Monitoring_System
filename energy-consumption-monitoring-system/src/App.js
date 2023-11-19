@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import PieChart from './PieChart';
 import ChartSelector from './ChartSelector';
 import Table from './Table';
+import Totals from './Totals';
 import io from 'socket.io-client';
+// import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const App = () => {
   const [currents, setCurrents] = useState([]);
@@ -35,15 +37,26 @@ const App = () => {
 
   return (
     <div>
-      <h1>Home Energy Consumption Monitoring System</h1>
-      <div>
-        <Table devices={devices} currents={currents}/>
+
+      <h1 class="title is-1 has-text-centered ">Home Energy Consumption</h1>
+
+      
+
+      <div class="columns">
+        <div class="column"> 
+          <Totals currents={currents}></Totals>
+        </div>
+        <div class="column"> 
+          <Table devices={devices} currents={currents}/>
+        </div>
+        
+        <div class="column">
+          <PieChart title={"Energy Distribution by Devices"} values={currents} labels={devices}/>
+        </div>
       </div>
       
-      <div>
-        <PieChart title={"Energy Distribution by Devices"} values={currents} labels={devices}/>
-      </div>
-      <div>
+
+      <div class="tile is-ancestor" >
         {combinedData.map((item) => (
           <ChartSelector
             key={item.device}

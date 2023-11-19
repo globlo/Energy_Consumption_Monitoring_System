@@ -38,9 +38,9 @@ const RealTimeWattChart = ({ deviceName, currentValue }) => {
         <Plot
           data={data}
           layout={{
-            width: 600,
-            height: 400,
-            title: deviceName + " ("+(currentValue * 120).toFixed(2) + " W)",
+            width: window.innerWidth * 0.20,
+            height: window.innerWidth * 0.18,
+            title: "Power ("+(currentValue * 120).toFixed(2) + " W)",
             xaxis: { title: 'Time' },
             yaxis: { title: 'Power (W)' },
           }}

@@ -18,7 +18,6 @@ const PieChart = ({title, values, labels }) => {
 
   return (
     <div>
-      <h2>Pie Chart</h2>
       <Plot
         data={data}
         layout={layout}

@@ -37,9 +37,9 @@ const RealTimeCurrentChart = ({deviceName, currentValue}) => {
       <Plot
         data={data}
         layout={{ 
-          width: 600,
-          height: 400,
-          title: deviceName + " ("+ currentValue.toFixed(2) + " A)",
+          width: window.innerWidth * 0.20,
+          height: window.innerWidth * 0.18,
+          title: "Current ("+ currentValue.toFixed(2) + " A)",
           xaxis: { title: 'Time' }, 
           yaxis: { title: 'Current (A)' } }}
       />
