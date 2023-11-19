@@ -23,24 +23,23 @@ const Totals = ({currents}) => {
   const { totalCurrent, totalWatt } = calculateTotals();
 
   return (
-    <div>
+    <div class="box " style={{ width: "100%"}}>
 
 
-<div class="section">
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Total Current</p>
-      <p class="title">{totalCurrent.toFixed(2)} A</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Total Watt</p>
-      <p class="title">{totalWatt.toFixed(2)} W</p>
-    </div>
-  </div>
-</div>
-
+        <div class="section ">
+            <div class="level-item has-text-centered box has-background-dark has-text-white">
+                <div class="is-spaced"> 
+                <p class="heading is-size-6">Total Current</p>
+                <p class="title is-size-2 has-text-info">{totalCurrent.toFixed(2)} A</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered box has-background-dark has-text-white"> 
+                <div>
+                <p class="heading is-size-6">Total Power</p>
+                <p class="title is-size-2 has-text-warning">{totalWatt.toFixed(2)} W</p>
+                </div>
+            </div>
+        </div>
 
 
     </div>

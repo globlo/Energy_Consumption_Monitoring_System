@@ -25,21 +25,21 @@ const Table = ({ devices, currents }) => {
   }));
 
   return (
-    <div >
+    <div class="box">
       <Plot
         data={[
           {
             type: 'table',
             header: {
               values: tableData.map((column) => column.Header),
-              font: { size: 16 },
+              font: { size: 16, color: "#fff"},
               height: 50,
               align: ["center", "center"],
-              fill: { color: "#19E4BB" }
+              fill: { color: "rgba(0,0,0,0.7)" }
             },
             cells: {
               values: tableData.map((column) => tableContent.map((row) => row[column.accessor])),
-              font: { size: 16 },
+              font: { size: 16},
               height: 45,
               align: ["center", "center"],
               

@@ -1,23 +1,23 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 
-const PieChart = ({title, values, labels }) => {
+const PieChart = ({currents, labels }) => {
   const data = [{
     type: 'pie',
-    values: values,
+    values: currents,
     labels: labels,
     textinfo: 'label+percent',
     insidetextorientation: 'radial',
   }];
 
   const layout = {
-    height: 400,
-    width: 400,
-    title: title,
+    height: window.innerWidth * 0.25,
+    width: window.innerWidth * 0.25,
+    title: "Energy Distribution by Devices",
   };
 
   return (
-    <div>
+    <div class="box">
       <Plot
         data={data}
         layout={layout}

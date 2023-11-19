@@ -18,9 +18,9 @@ const ChartSelector = ({ deviceName,currentValue }) => {
 
   return (
     <div  class="box">
-       <h2 class="title is-3 has-text-centered">
+       <h3 class="title is-4 has-text-centered">
         {device}
-      </h2>
+      </h3>
       <div class="dropdown-trigger has-text-centered">
       <select class="button is-centered is-primary" value={selectedChart} onChange={handleSelectionChange}>
         <option value="both">Current (A) -  Power (W) </option>

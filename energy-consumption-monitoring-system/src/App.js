@@ -38,25 +38,27 @@ const App = () => {
   return (
     <div>
 
-      <h1 class="title is-1 has-text-centered ">Home Energy Consumption</h1>
+      <h1 class="title is-1 has-text-centered box has-background-dark has-text-white">
+        Home Energy Consumption
+      </h1>
 
       
 
-      <div class="columns">
-        <div class="column"> 
-          <Totals currents={currents}></Totals>
-        </div>
+      <div class="columns box has-background-dark">
+
         <div class="column"> 
           <Table devices={devices} currents={currents}/>
         </div>
-        
+        <div class="column"> 
+          <Totals currents={currents}></Totals>
+        </div>
         <div class="column">
-          <PieChart title={"Energy Distribution by Devices"} values={currents} labels={devices}/>
+          <PieChart currents={currents} labels={devices}/>
         </div>
       </div>
       
 
-      <div class="tile is-ancestor" >
+      <div class="tile is-ancestor has-background-dark" >
         {combinedData.map((item) => (
           <ChartSelector
             key={item.device}
