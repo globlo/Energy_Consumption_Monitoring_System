@@ -4,17 +4,23 @@ import RealTimeCurrentChart from './RealTimeCurrentChart';
 import RealTimeWattChart from './RealTimeWattChart';
 
 
-const ChartSelector = ({ device, currentValue }) => {
+const ChartSelector = ({ deviceName,currentValue }) => {
   const [selectedChart, setSelectedChart] = useState('both');
+  const [device, setDevice] = useState(deviceName);
 
   const handleSelectionChange = (e) => {
-    const value = e.target.value;
-    setSelectedChart(value);
+    setSelectedChart(e.target.value);
+  };
+
+  const handleDeviceChange = (e) => {
+    setDevice(e.target.innerText);
   };
 
   return (
     <div>
-      <h2>{device}</h2>
+       <h2 contentEditable={true} onBlur={handleDeviceChange}>
+        {device}
+      </h2>
       <select value={selectedChart} onChange={handleSelectionChange}>
         <option value="both">Current & Watt</option>
         <option value="current">Current (A)</option>

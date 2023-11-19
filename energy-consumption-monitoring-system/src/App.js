@@ -1,6 +1,8 @@
 // App.js
 import React, { useEffect, useState } from 'react';
+import PieChart from './PieChart';
 import ChartSelector from './ChartSelector';
+import Table from './Table';
 import io from 'socket.io-client';
 
 const App = () => {
@@ -34,11 +36,15 @@ const App = () => {
   return (
     <div>
       <h1>Home Energy Consumption Monitoring System</h1>
+      <Table devices={devices} currents={currents}/>
+      <div>
+        <PieChart title={"Energy Distribution by Devices"} values={currents} labels={devices}/>
+      </div>
       <div>
         {combinedData.map((item) => (
           <ChartSelector
             key={item.device}
-            device={item.device}
+            deviceName={item.device}
             currentValue={item.currentValue}
 
           />

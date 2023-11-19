@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
 const RealTimeCurrentChart = ({deviceName, currentValue}) => {
-  const [data, setData] = useState([{ x: [], y: [], type: 'scatter', mode: 'lines+markers' }]);
+  const [data, setData] = useState([
+    { 
+      x: [], 
+      y: [], 
+      type: 'scatter', 
+      mode: 'lines+markers' 
+    }
+  ]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,7 +36,12 @@ const RealTimeCurrentChart = ({deviceName, currentValue}) => {
     <div>
       <Plot
         data={data}
-        layout={{ title: deviceName, xaxis: { title: 'Time' }, yaxis: { title: 'Current (A)' } }}
+        layout={{ 
+          width: 600,
+          height: 400,
+          title: deviceName + " ("+ currentValue.toFixed(2) + " A)",
+          xaxis: { title: 'Time' }, 
+          yaxis: { title: 'Current (A)' } }}
       />
     </div>
   );
