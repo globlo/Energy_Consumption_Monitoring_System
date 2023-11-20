@@ -37,11 +37,16 @@ void setup() {
 
   Serial.println("WiFi connected");  
 
+  randomSeed(analogRead(0));
+
 }
 
 
 void loop() {
   // delay(5000);
+
+  float randomValue = random(130, 150) / 10.0;
+  
 
   Serial.print("connecting to ");
   Serial.println(serverAddress);
@@ -51,7 +56,7 @@ void loop() {
   http.addHeader("Content-Type", "application/x-www-form-urlencoded"); // Set the content type
 
   // Data to send in the POST request
-  String postData = "Current=18"; // Replace with your data
+  String postData = "SensorId=Fridge&Current="+String(randomValue); // Replace with your data
 
   // int httpCode = http.GET();
   int httpCode = http.POST(postData);
@@ -66,5 +71,5 @@ void loop() {
   }
 
   http.end();
-  delay(5000); // Wait for 5 seconds
+  delay(1000); // Wait for 5 seconds
 }
