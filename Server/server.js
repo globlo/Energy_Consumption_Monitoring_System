@@ -64,24 +64,36 @@ io = require("socket.io")(listening_React, {
 });
 
 
+const store_dummy_data = (deviceNames, currentValues) => {
+  let devicesList = ['AC', 'TV', 'DishWasher', 'Standing Lamp','TreadMill','Desk Top'];
+  while (deviceNames.length < 4) {
+    
+    deviceNames.push(devicesList[0]);
+    currentValues.push(Math.random() * (5 - 0) + 0);
+
+    console.log(`New sensor detected with ID: ${devicesList[0]}`);
+
+    devicesList.shift();
+
+
+  }
+
+
+};
+
 // Socket.IO connection
 io.on('connection', (socket) => {
   console.log("Connected & Socket Id is ", socket.id);
 
   // Periodically emit real-time data
   const sendRealtimeData = () => {
+    
+
     const deviceNames = Object.keys(sensorData);
     const currentValues = Object.values(sensorData);
 
     //Fill Up the number of devices to 4 for demo.
-    let devicesList = ['AC', 'TV', 'DishWasher', 'Standing Lamp'];
-    while (deviceNames.length < 4) {
-      deviceNames.push(devicesList[0]);
-      devicesList.shift();
-    }
-    while (currentValues.length < 4) {
-      currentValues.push(Math.random() * (15 - 13) + 13);
-    }
+    store_dummy_data(deviceNames, currentValues);
 
 
     // Emit the current data for all sensors to connected clients (React frontend)
@@ -97,11 +109,40 @@ io.on('connection', (socket) => {
   sendRealtimeData();
 
   // Periodic emissions every 2 seconds (adjust as needed)
-  const intervalId = setInterval(sendRealtimeData, 1500);
+  const intervalId = setInterval(sendRealtimeData, 5000);
 
   // Clean up on socket disconnect
   socket.on('disconnect', () => {
     console.log(intervalId);
+  });
+
+  socket.on('changeDeviceName', (devices) => {
+    console.log('changeDeviceName'+devices);
+    //sensorData
+    console.log('sensorData'+sensorData);
+
+    const deviceNames = Object.keys(sensorData);
+
+    for(var i =0; i < devices.length; i++){
+
+      let exist_device_i = deviceNames[i];
+
+      if(devices[i] != String(exist_device_i)){
+        console.log("not matching "+i);
+        console.log(devices[i] + " --- " + exist_device_i);
+
+        // Create a new key with the same value
+        sensorData[devices[i]] = sensorData[exist_device_i];
+
+        // Delete the old key
+        delete sensorData[exist_device_i];
+
+      }
+
+    }
+
+
+
   });
 
 

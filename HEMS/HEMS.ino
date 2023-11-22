@@ -5,6 +5,10 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
+#define acs712 A0
+
+const String deviceID = "Treadmill"; 
+
 // const char* ssid     = "CenturyLink8078";
 // const char* password = "2816158333";
 
@@ -37,7 +41,7 @@ void setup() {
 
   Serial.println("WiFi connected");  
 
-  randomSeed(analogRead(0));
+  pinMode(acs712, INPUT);
 
 }
 
@@ -45,7 +49,32 @@ void setup() {
 void loop() {
   // delay(5000);
 
-  float randomValue = random(130, 150) / 10.0;
+  unsigned int x=0;
+  float sensor_data=0.0, average=0.0, current=0.0;
+
+    for (int x = 0; x < 150; x++){ //Get 150 samples
+    sensor_data = analogRead(acs712);     //Read current sensor values   
+    average = average + sensor_data;  //Add samples together
+    delay (3); // let ADC settle before next sample 3ms
+    }
+  average=average/150.0;//Taking Average of Samples
+
+  Serial.print("average : ");
+  Serial.println(average);//
+  Serial.println();//
+
+  average = average - 202;
+
+
+  current = float(((average * (5.0 / 1024.0)) - 2.5 )/0.185);
+
+  if (current < 0.006) {
+    current = 0;
+  }
+
+  Serial.print("current : ");
+  Serial.println(current, 5);//Print the read current on Serial monitor
+  Serial.println();//
   
 
   Serial.print("connecting to ");
@@ -55,8 +84,10 @@ void loop() {
   http.begin(wifiClient, serverAddress);
   http.addHeader("Content-Type", "application/x-www-form-urlencoded"); // Set the content type
 
+  
+
   // Data to send in the POST request
-  String postData = "SensorId=Fridge&Current="+String(randomValue); // Replace with your data
+  String postData = "SensorId="+deviceID+"&Current=" + String(current, 16); // Convert the float# to a string with 16 decimal places
 
   // int httpCode = http.GET();
   int httpCode = http.POST(postData);

@@ -4,6 +4,7 @@ import PieChart from './PieChart';
 import ChartSelector from './ChartSelector';
 import Table from './Table';
 import Totals from './Totals';
+import SettingsModal from './SettingsModal';
 import io from 'socket.io-client';
 // import 'bootstrap/dist/css/bootstrap.min.css'; 
 
@@ -11,9 +12,29 @@ const App = () => {
   const [currents, setCurrents] = useState([]);
   const [devices, setDevices] = useState([]);
   const [combinedData, setCombinedData] = useState([]);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const socket_address = 'http://localhost:4000';
+
+  const handleSettingButtonClick = () => {
+    setShowSettings(true);
+  };
 
   useEffect(() => {
-    const socket = io.connect('http://localhost:4000');
+
+    const socket = io.connect(socket_address);
+
+    socket.emit('changeDeviceName', devices);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [showSettings]);
+
+
+
+  useEffect(() => {
+    const socket = io.connect(socket_address);
 
     // Listen for "Realtime" event and update state
     socket.on('Realtime', (deviceNames, currentValues) => {
@@ -42,7 +63,18 @@ const App = () => {
         Home Energy Consumption
       </h1>
 
-      
+      <div class="content ">
+        
+        <button className="button is-primary" onClick={handleSettingButtonClick}>
+          Open Settings
+        </button>
+        <SettingsModal
+          showSettings={showSettings}
+          setShowSettings={setShowSettings}
+          devices={devices}
+          setDevices={setDevices}
+        />
+      </div>
 
       <div class="columns box has-background-dark">
 
