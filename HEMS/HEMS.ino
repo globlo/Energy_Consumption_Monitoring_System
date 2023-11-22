@@ -68,7 +68,7 @@ void loop() {
 
   current = float(((average * (5.0 / 1024.0)) - 2.5 )/0.185);
 
-  if (current < 0.006) {
+  if (current < 0.06) {
     current = 0;
   }
 
@@ -102,5 +102,5 @@ void loop() {
   }
 
   http.end();
-  delay(1000); // Wait for 5 seconds
+  // delay(1000); // Wait for 5 seconds
 }

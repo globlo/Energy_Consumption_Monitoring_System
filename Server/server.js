@@ -23,7 +23,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle HTTP GET requests
 router.get('/', (req, res) => {
-  console.log('GET request');
+  // console.log('GET request');
   res.send('This is a GET request response. Hey from Server!');
 });
 
@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
   console.log(`Received POST request from Sensor ${sensorId} with Current=${current}`);
 
   // Store the received data in the object
-  if (!sensorData[sensorId]) {
+  if (!(sensorId in sensorData)) {
     sensorData[sensorId] = [];
     console.log(`New sensor detected with ID: ${sensorId}`);
   }
@@ -63,20 +63,34 @@ io = require("socket.io")(listening_React, {
   },
 });
 
-
+const dummy_num = 4;
 const store_dummy_data = (deviceNames, currentValues) => {
   let devicesList = ['AC', 'TV', 'DishWasher', 'Standing Lamp','TreadMill','Desk Top'];
-  while (deviceNames.length < 4) {
+
+  // let keysArray = Object.keys(sensorData);
+  while (deviceNames.length < dummy_num) {
+
+    let current = Math.random() * (5 - 0) + 0;
     
     deviceNames.push(devicesList[0]);
-    currentValues.push(Math.random() * (5 - 0) + 0);
+    currentValues.push(current);
 
-    console.log(`New sensor detected with ID: ${devicesList[0]}`);
+    sensorData[devicesList[0]] = current;
 
     devicesList.shift();
 
+    // console.log(`extra sensor added with ID: ${devicesList[0]}`);
 
   }
+
+  if(deviceNames.length >= dummy_num){
+
+    for(let i = dummy_num-1 ; i >= 1 ; i--){ //update random value
+      currentValues[i] = Math.random() * (5 - 0) + 0;
+    }
+
+  }
+  
 
 
 };
@@ -87,7 +101,7 @@ io.on('connection', (socket) => {
 
   // Periodically emit real-time data
   const sendRealtimeData = () => {
-    
+
 
     const deviceNames = Object.keys(sensorData);
     const currentValues = Object.values(sensorData);
@@ -109,7 +123,7 @@ io.on('connection', (socket) => {
   sendRealtimeData();
 
   // Periodic emissions every 2 seconds (adjust as needed)
-  const intervalId = setInterval(sendRealtimeData, 5000);
+  const intervalId = setInterval(sendRealtimeData, 1000);
 
   // Clean up on socket disconnect
   socket.on('disconnect', () => {
@@ -122,12 +136,13 @@ io.on('connection', (socket) => {
     console.log('sensorData'+sensorData);
 
     const deviceNames = Object.keys(sensorData);
+    const currentValues = Object.values(sensorData);
 
-    for(var i =0; i < devices.length; i++){
+    for(var i =0; i < deviceNames.length; i++){
 
       let exist_device_i = deviceNames[i];
 
-      if(devices[i] != String(exist_device_i)){
+      if(devices[i] && (devices[i] != String(exist_device_i))){
         console.log("not matching "+i);
         console.log(devices[i] + " --- " + exist_device_i);
 
@@ -136,6 +151,10 @@ io.on('connection', (socket) => {
 
         // Delete the old key
         delete sensorData[exist_device_i];
+
+        console.log(Object.keys(sensorData))
+        // (async () => { console.log('Start sleeping...'); await new Promise(resolve => setTimeout(resolve, 8000)); console.log('Awake now!'); })();
+
 
       }
 

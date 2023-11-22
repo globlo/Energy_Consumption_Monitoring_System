@@ -26,6 +26,8 @@ const App = () => {
 
     socket.emit('changeDeviceName', devices);
 
+    console.log("sent");
+
     return () => {
       socket.disconnect();
     };
@@ -96,7 +98,6 @@ const App = () => {
             key={item.device}
             deviceName={item.device}
             currentValue={item.currentValue}
-
           />
         ))}
       </div>
