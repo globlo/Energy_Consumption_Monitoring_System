@@ -17,7 +17,7 @@ const PieChart = ({currents, labels }) => {
   };
 
   return (
-    <div class="box">
+    <div >
       <Plot
         data={data}
         layout={layout}

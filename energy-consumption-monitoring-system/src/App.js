@@ -6,6 +6,7 @@ import Table from './Table';
 import Totals from './Totals';
 import SettingsModal from './SettingsModal';
 import io from 'socket.io-client';
+import DeviceSelecter_PieChart from './DeviceSelecter_PieChart';
 // import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 const App = () => {
@@ -86,8 +87,8 @@ const App = () => {
         <div class="column"> 
           <Totals currents={currents}></Totals>
         </div>
-        <div class="column">
-          <PieChart currents={currents} labels={devices}/>
+        <div class="column box">
+          <DeviceSelecter_PieChart currents={currents} devices={devices}/>
         </div>
       </div>
       
