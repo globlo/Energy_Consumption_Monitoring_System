@@ -92,16 +92,18 @@ const App = () => {
         </div>
       </div>
       
-
-      <div class="tile is-ancestor has-background-dark" >
-        {combinedData.map((item) => (
-          <ChartSelector
-            key={item.device}
-            deviceName={item.device}
-            currentValue={item.currentValue}
-          />
-        ))}
+      <div class="columns box has-background-dark">
+        <div class="tile is-ancestor has-background-dark" >
+          {combinedData.map((item) => (
+            <ChartSelector
+              key={item.device}
+              deviceName={item.device}
+              currentValue={item.currentValue}
+            />
+          ))}
+        </div>
       </div>
+      
     </div>
   );
 };
